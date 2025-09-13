@@ -29,8 +29,13 @@ class BrowserFrame(wx.Frame):
         for w in (self.addr, self.btn_theme):
             top.Add(w, 1 if w is self.addr else 0, wx.ALL | (wx.EXPAND if w is self.addr else 0), 4)
 
+        chrome.SetSizer(top)  # attach the toolbar sizer to its parent panel
+
         self.nb = wx.Notebook(self.left)
-        s = wx.BoxSizer(wx.VERTICAL); s.Add(top,0,wx.EXPAND); s.Add(self.nb,1,wx.EXPAND); self.left.SetSizer(s)
+        s = wx.BoxSizer(wx.VERTICAL)
+        s.Add(chrome, 0, wx.EXPAND)   # add the *panel*, not the sizer
+        s.Add(self.nb, 1, wx.EXPAND)
+        self.left.SetSizer(s)
 
         self.CreateStatusBar(); self.SetStatusText("Ready")
         self.addr.Bind(wx.EVT_TEXT_ENTER, self._on_go)
